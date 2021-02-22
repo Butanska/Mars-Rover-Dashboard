@@ -69,7 +69,9 @@ const ImageOfTheDay = (apod) => {
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
     const photodate = new Date(apod.date)
-    console.log(photodate.getDate(), today.getDate());
+    //console.log(photodate.getDate(), today.getDate());
+    console.log(today.getDate());
+    console.log(photodate.getDate());
 
     console.log(photodate.getDate() === today.getDate());
     if (!apod || apod.date === today.getDate() ) {
@@ -101,7 +103,7 @@ const getImageOfTheDay = (state) => {
     //     getImageOfTheDay(store)
     // }
 
-    fetch(`https://localhost:3000/apod`)
+    fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
 
