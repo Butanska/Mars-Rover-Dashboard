@@ -65,19 +65,21 @@ const Greeting = (name) => {
 
 // Example of a pure function that renders infomation requested from the backend
 const ImageOfTheDay = (apod) => {
-
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
     const photodate = new Date(apod.date)
     //console.log(photodate.getDate(), today.getDate());
+    console.log(today);
     console.log(today.getDate());
     console.log(photodate.getDate());
 
     console.log(photodate.getDate() === today.getDate());
+    //Since we initially don't have data in the apod and it has just an empty string, the following condition will evaluate to True. This will cause the function `getImageOfTheDay` to be called so that we can fetch some data for the apod object from the API:
     if (!apod || apod.date === today.getDate() ) {
         getImageOfTheDay(store)
     }
-
+    console.log(apod.image.date)
+    
     // check if the photo of the day is actually type video!
     if (apod.media_type === "video") {
         return (`
@@ -98,14 +100,12 @@ const ImageOfTheDay = (apod) => {
 // Example API call
 const getImageOfTheDay = (state) => {
     let { apod } = state
-
-    // if (!apod || apod.date === today.getDate() ) {
-    //     getImageOfTheDay(store)
-    // }
+    //destructuring, equivalent to let apod = state.apod
+    //console.log(state)
 
     fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
-
-    return data
+    
+    //return data
 }
