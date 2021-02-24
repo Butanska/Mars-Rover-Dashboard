@@ -20,11 +20,22 @@ const render = async (root, state) => {
 // create content
 const App = (state) => {
     let { rovers, apod } = state
+    // const arr1 = store.rovers
+    // arr1.forEach(element => {
+    //     const anchor = document.createElement('div');
+    //     document.body.appendChild(anchor);
+    //     const button = document.createElement('button');
+    //     button.innerHTML = `${element}`;
+    //     anchor.appendChild(button);
+    // })
+    buildNavMenu()
 
     return `
         <header></header>
         <main>
-            ${Greeting(store.user.name)}
+            Mars Dashboard
+            ${Greeting(store.user.name)}          
+
             <section>
                 <h3>Put things on the page!</h3>
                 <p>Here is an example section.</p>
@@ -42,6 +53,30 @@ const App = (state) => {
         <footer></footer>
     `
 }
+
+//Dynamically build the navigation menu
+
+const buildNavMenu = () => {
+    const navArray = store.rovers;
+    const navbarList = document.createElement('section');
+    const container = document.createElement('div');
+    container.className = 'roversContainer';
+    navbarList.appendChild(container);
+  
+    navArray.forEach (element => {
+      const anchor = document.createElement('div');
+      anchor.className = 'rovers';
+      container.appendChild(anchor);
+      const button = document.createElement('button');
+      button.id = `${element}`;
+      button.className = 'roverButton';
+      button.type = 'button';
+      button.value = `${element}`;
+      button.onclick = onClick(this);
+      button.innerHTML = `${element}`;
+      anchor.appendChild(button);
+    })
+  }
 
 // listening for load event because page should load before any JS is called
 window.addEventListener('load', () => {
@@ -67,25 +102,25 @@ const Greeting = (name) => {
 const ImageOfTheDay = (apod) => {
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
-    const photodate = new Date(apod.date)
+    //const photodate = new Date(apod.date)
     //console.log(photodate.getDate(), today.getDate());
     console.log(today);
     console.log(today.getDate());
-    console.log(photodate.getDate());
+    //console.log(photodate.getDate());
 
-    console.log(photodate.getDate() === today.getDate());
+    //console.log(photodate.getDate() === today.getDate());
     //Since we initially don't have data in the apod and it has just an empty string, the following condition will evaluate to True. This will cause the function `getImageOfTheDay` to be called so that we can fetch some data for the apod object from the API:
     if (!apod || apod.date === today.getDate() ) {
         getImageOfTheDay(store)
     }
-    console.log(apod.image.date)
+    //console.log(apod.image.date)
     
     // check if the photo of the day is actually type video!
-    if (apod.media_type === "video") {
+    if (apod.image.media_type === "video") {
         return (`
-            <p>See today's featured video <a href="${apod.url}">here</a></p>
-            <p>${apod.title}</p>
-            <p>${apod.explanation}</p>
+            <p>See today's featured video <a href="${apod.image.url}" target="_blank">here</a></p>
+            <p>${apod.image.title}</p>
+            <p>${apod.image.explanation}</p>
         `)
     } else {
         return (`
@@ -109,3 +144,22 @@ const getImageOfTheDay = (state) => {
     
     //return data
 }
+
+//Current Rover API Call
+
+const getCurrentRoverData = (currentRover) => {
+    fetch(`http://localhost:3000/manifests/${currentRover}`)
+        .then(res => res.json())
+        .then(currentRoverData => updateStore(store, { currentRoverData }))
+  }
+
+// ------------------------------------------------------  COLLECT USER INPUT
+
+const onClick = (e) => {
+    const selectedRover = e.id;
+    updateStore(store, { currentRover: `${selectedRover}` })
+    getCurrentRoverData(store.currentRover)
+    console.log(store)
+}
+
+
