@@ -28,12 +28,12 @@ const App = (state) => {
     //     button.innerHTML = `${element}`;
     //     anchor.appendChild(button);
     // })
-    buildNavMenu()
 
     return `
         <header></header>
         <main>
             Mars Dashboard
+            ${buildNavMenu()}
             ${Greeting(store.user.name)}          
 
             <section>
@@ -59,22 +59,15 @@ const App = (state) => {
 const buildNavMenu = () => {
     const navArray = store.rovers;
     const navbarList = document.createElement('section');
+    document.body.appendChild(navbarList);
     const container = document.createElement('div');
     container.className = 'roversContainer';
     navbarList.appendChild(container);
   
     navArray.forEach (element => {
-      const anchor = document.createElement('div');
-      anchor.className = 'rovers';
-      container.appendChild(anchor);
-      const button = document.createElement('button');
-      button.id = `${element}`;
-      button.className = 'roverButton';
-      button.type = 'button';
-      button.value = `${element}`;
-      button.onclick = onClick(this);
-      button.innerHTML = `${element}`;
-      anchor.appendChild(button);
+        return `<div class="rovers" > 
+      <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button> 
+      </div> `
     })
   }
 
