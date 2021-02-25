@@ -109,7 +109,10 @@ const ImageOfTheDay = (apod) => {
     //console.log(apod.image.date)
     
     // check if the photo of the day is actually type video!
-    if (apod.image.media_type === "video") {
+    if (apod.image.media_type === undefined) {
+        return `<p> Welcome to Mars Rover Dashboard </p>`
+    }
+    else if (apod.image.media_type === "video") {
         return (`
             <p>See today's featured video <a href="${apod.image.url}" target="_blank">here</a></p>
             <p>${apod.image.title}</p>
