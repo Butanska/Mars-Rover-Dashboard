@@ -27,8 +27,7 @@ const App = (state) => {
         <header></header>
         <main>
             ${navBar()}
-            ${renderSelectedRoverData(store.currentRover)}
-            ${Greeting(store.user.name)}          
+            ${renderSelectedRoverData(store.currentRover)}         
   
         </main>
         <footer></footer>
@@ -88,8 +87,8 @@ const showcase = () => {
       <div class="container">
         <div class="showcase-container">
           <div class="showcase-content">
-            <div class="category category-italy">Italy</div>
-            <h2>The Venice Files</h2>
+            <div class="category category-mars">Mars</div>
+            <h2>Mars Exploration Rovers</h2>
             <p>Lorem ipsum ...</p>
             <a href="blog_post.html" class="btn">Read More</a>
           </div>
@@ -146,11 +145,22 @@ const renderSelectedRoverData = (rover) => {
 
 const recentPhotos = () => {
     const photoArray = store.currentRoverData.roverData.recent_photos.photos
+
     if (photoArray.length < 4) {
         console.log(photoArray)
     } else {
         const slicedArray = photoArray.slice (0,4)
         console.log(slicedArray)
+        return slicedArray.map (pic => {
+            //console.log(pic.img_src)
+            return (`
+            <div>
+            <img src="${pic.img_src}" height="350px" width="100%" />
+            <p>Hello</p>
+            </div>
+        `
+        )
+        })
     }
 
 }
