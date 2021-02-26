@@ -162,7 +162,7 @@ const recentPhotos = () => {
         const slicedArray = photoArray.slice (0,4)
         console.log(slicedArray)
         return slicedArray.map (pic => {
-            //console.log(pic.img_src)
+            console.log(pic.img_src)
             return (`
             <div>
             <img src="${pic.img_src}" height="350px" width="100%" />
