@@ -28,11 +28,11 @@ const App = (state) => {
     //     button.innerHTML = `${element}`;
     //     anchor.appendChild(button);
     // })
+    
 
     return `
         <header></header>
         <main>
-            Mars Dashboard
             ${buildNavMenu()}
             ${Greeting(store.user.name)}          
 
@@ -56,20 +56,50 @@ const App = (state) => {
 
 //Dynamically build the navigation menu
 
+// const buildNavMenu = () => {
+//     const navArray = store.rovers;
+//     const navbarList = document.createElement('section');
+//     document.body.appendChild(navbarList);
+//     const container = document.createElement('div');
+//     container.className = 'roversContainer';
+//     navbarList.appendChild(container);
+
+//     navArray.forEach (element => {
+//         return `<div class="rovers" > 
+//       <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button> 
+//       </div> `
+//     })
+//   }
+
 const buildNavMenu = () => {
+
     const navArray = store.rovers;
+    
     const navbarList = document.createElement('section');
+    
     document.body.appendChild(navbarList);
+    
     const container = document.createElement('div');
+    
     container.className = 'roversContainer';
+    
     navbarList.appendChild(container);
-  
-    navArray.forEach (element => {
-        return `<div class="rovers" > 
-      <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button> 
-      </div> `
-    })
-  }
+    
+    
+    return navArray.map (element => {
+    
+    return `<div class="rovers" >
+    
+    <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button>
+    
+    </div> `
+    
+    }).join(' ')
+    
+    }
+
+
+
 
 // listening for load event because page should load before any JS is called
 window.addEventListener('load', () => {
