@@ -18,24 +18,29 @@ const render = async (root, state) => {
 
 
 // create content
+
 const App = (state) => {
     let { rovers, apod } = state
-    // const arr1 = store.rovers
-    // arr1.forEach(element => {
-    //     const anchor = document.createElement('div');
-    //     document.body.appendChild(anchor);
-    //     const button = document.createElement('button');
-    //     button.innerHTML = `${element}`;
-    //     anchor.appendChild(button);
-    // })
-    
-
+  
+    if (store.currentRoverData) {
+      return `
+        <header></header>
+        <main>
+            ${navBar()}
+            ${renderSelectedRoverData(store.currentRover)}
+            ${Greeting(store.user.name)}          
+  
+        </main>
+        <footer></footer>
+    `
+    }
     return `
         <header></header>
         <main>
-            ${buildNavMenu()}
+            ${navBar()}
+            ${showcase()}
             ${Greeting(store.user.name)}          
-
+  
             <section>
                 <h3>Put things on the page!</h3>
                 <p>Here is an example section.</p>
@@ -52,6 +57,46 @@ const App = (state) => {
         </main>
         <footer></footer>
     `
+  }  
+
+//NavBar
+
+const navBar = () => {
+    return `
+    <!-- Navbar -->
+    <nav id="main-nav">
+      <div class="container">
+        <h1 class="title">
+          <!-- <a href="index.html"><i class="fas fa-globe-europe"></i>Mars Rover Dashboard</a> -->
+          <i class="fas fa-globe-europe"></i> Mars Rover Dashboard <span> Mission insights </span>
+        </h1>
+        <div class="roversContainer">
+            <button class="current">APOD</button>
+            ${buildNavMenu()}
+        </div>
+      </div>
+    </nav>
+    `
+}
+
+//Showcase
+
+const showcase = () => {
+    return `
+    <!-- Showcase -->
+    <header id="showcase">
+      <div class="container">
+        <div class="showcase-container">
+          <div class="showcase-content">
+            <div class="category category-italy">Italy</div>
+            <h2>The Venice Files</h2>
+            <p>Lorem ipsum ...</p>
+            <a href="blog_post.html" class="btn">Read More</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    `
 }
 
 //Dynamically build the navigation menu
@@ -60,30 +105,55 @@ const buildNavMenu = () => {
 
     const navArray = store.rovers;
     
-    const navbarList = document.createElement('section');
-    
-    document.body.appendChild(navbarList);
-    
-    const container = document.createElement('div');
-    
-    container.className = 'roversContainer';
-    
-    navbarList.appendChild(container);
-    
-    
     return navArray.map (element => {
     
-    return `<div class="rovers" >
-    
-    <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button>
-    
-    </div> `
+        return `<div class="rovers" >
+        
+        <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button>
+        
+        </div> `
     
     }).join(' ')
     
+}
+
+//Render data about selected rover
+
+const renderSelectedRoverData = (rover) => {
+    const roverName = store.currentRover
+    const launchDate = store.currentRoverData.roverData.launch_date
+    const landingDate = store.currentRoverData.roverData.landing_date
+    const status = store.currentRoverData.roverData.rover_status
+    const photoDate = store.currentRoverData.roverData.latest_photo_date
+
+    // Most recently available photos
+    recentPhotos()
+
+    return `<div class="roverData" >
+    <h1>${roverName}</h1>
+    <ul>
+        <li>The ${roverName} rover was launched on ${launchDate}.</li>
+        <li>It landed on Mars on ${landingDate}.</li>
+        <li>Its current status is ${status}.</li>
+        <li>The latest photos obtained by ${roverName} were taken on ${photoDate}. You can see them below:</li>
+    </ul>
+
+    </div> `
+    
+}
+
+// Most recently available photos
+
+const recentPhotos = () => {
+    const photoArray = store.currentRoverData.roverData.recent_photos.photos
+    if (photoArray.length < 4) {
+        console.log(photoArray)
+    } else {
+        const slicedArray = photoArray.slice (0,4)
+        console.log(slicedArray)
     }
 
-
+}
 
 
 // listening for load event because page should load before any JS is called
@@ -110,23 +180,28 @@ const Greeting = (name) => {
 const ImageOfTheDay = (apod) => {
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
-    //const photodate = new Date(apod.date)
-    //console.log(photodate.getDate(), today.getDate());
-    console.log(today);
-    console.log(today.getDate());
-    //console.log(photodate.getDate());
+    const photodate = new Date(apod.date)
+    console.log(photodate.getDate(), today.getDate());
+    // console.log(today);
+    // console.log(today.getDate());
+    // console.log(photodate.getDate());
 
     //console.log(photodate.getDate() === today.getDate());
+
     //Since we initially don't have data in the apod and it has just an empty string, the following condition will evaluate to True. This will cause the function `getImageOfTheDay` to be called so that we can fetch some data for the apod object from the API:
-    if (!apod || apod.date === today.getDate() ) {
+    if ((!apod) || apod.date === today.getDate() ) {
         getImageOfTheDay(store)
     }
     //console.log(apod.image.date)
     
     // check if the photo of the day is actually type video!
-    if (apod.image.media_type === undefined) {
+ 
+    if (apod === '' || apod.image.media_type === undefined ) {
+
         return `<p> Welcome to Mars Rover Dashboard </p>`
-    }
+        
+        }
+
     else if (apod.image.media_type === "video") {
         return (`
             <p>See today's featured video <a href="${apod.image.url}" target="_blank">here</a></p>

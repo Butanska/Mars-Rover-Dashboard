@@ -1,0 +1,53 @@
+/* Navbar */
+
+#main-nav {
+  background: #890000;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+#main-nav .container {
+  display: grid;
+  grid-template-columns: 5fr 2fr;
+  padding: 1rem;
+  align-items: center;
+}
+
+#main-nav .container h1 {
+  color: #f3e5e5;
+}
+
+#main-nav span {
+  color: #0d0000;
+  font-style: italic;
+}
+
+#main-nav .container .roversContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+#main-nav .container button {
+  padding: 0.75rem;
+  margin: 0 0.25rem;
+  font-weight: bold;
+}
+
+#main-nav .container button .current {
+  background: #f3e5e5;
+  color: #333;
+  border-radius: 5px;
+}
+
+#main-nav .container button:hover {
+  background: #f3e5e5;
+  border-radius: 5px;
+}
+
+/* #main-nav .container .roverButton li {
+  padding: 0.75rem;
+  margin: 0 0.25rem;
+  font-weight: bold;
+} */
