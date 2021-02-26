@@ -148,6 +148,16 @@ const recentPhotos = () => {
 
     if (photoArray.length < 4) {
         console.log(photoArray)
+        return photoArray.map (pic=> {
+            console.log(pic.img_src)
+            return (
+            `<div>
+            <img src="${pic.img_src}" height="350px" width="100%" />
+            <p>Hello</p>
+            </div>`
+            )
+        })
+        
     } else {
         const slicedArray = photoArray.slice (0,4)
         console.log(slicedArray)
