@@ -56,21 +56,6 @@ const App = (state) => {
 
 //Dynamically build the navigation menu
 
-// const buildNavMenu = () => {
-//     const navArray = store.rovers;
-//     const navbarList = document.createElement('section');
-//     document.body.appendChild(navbarList);
-//     const container = document.createElement('div');
-//     container.className = 'roversContainer';
-//     navbarList.appendChild(container);
-
-//     navArray.forEach (element => {
-//         return `<div class="rovers" > 
-//       <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button> 
-//       </div> `
-//     })
-//   }
-
 const buildNavMenu = () => {
 
     const navArray = store.rovers;
