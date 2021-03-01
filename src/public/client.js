@@ -125,9 +125,6 @@ const renderSelectedRoverData = (rover) => {
     const status = store.currentRoverData.roverData.rover_status
     const photoDate = store.currentRoverData.roverData.latest_photo_date
 
-    // Most recently available photos
-    recentPhotos()
-
     return `<div class="roverData" >
     <h1>${roverName}</h1>
     <ul>
@@ -136,7 +133,7 @@ const renderSelectedRoverData = (rover) => {
         <li>Its current status is ${status}.</li>
         <li>The latest photos obtained by ${roverName} were taken on ${photoDate}. You can see them below:</li>
     </ul>
-
+    ${recentPhotos()}
     </div> `
     
 }
@@ -153,7 +150,6 @@ const recentPhotos = () => {
             return (
             `<div>
             <img src="${pic.img_src}" height="350px" width="100%" />
-            <p>Hello</p>
             </div>`
             )
         })
@@ -166,7 +162,6 @@ const recentPhotos = () => {
             return (`
             <div>
             <img src="${pic.img_src}" height="350px" width="100%" />
-            <p>Hello</p>
             </div>
         `
         )
