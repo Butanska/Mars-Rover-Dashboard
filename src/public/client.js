@@ -1,5 +1,5 @@
 let store = Immutable.Map({
-    user: Immutable.Map({ name: "Student" }),
+    user: Immutable.Map({ name: 'Mars Explorer' }),
     apod: '',
     rovers: Immutable.List(['Curiosity', 'Opportunity', 'Spirit']),
     currentRover: ''
@@ -8,8 +8,13 @@ let store = Immutable.Map({
 // add our markup to the page
 const root = document.getElementById('root')
 
-const updateStore = (store, newState) => {
-    store = store.merge(store, newState)
+// const updateStore = (store, newState) => {
+//     store = store.merge(store, newState)
+//     render(root, store)
+// }
+
+const updateStore = (state, newState) => {
+    store = state.merge(newState)
     render(root, store)
 }
 
@@ -21,8 +26,6 @@ const render = async (root, state) => {
 // create content
 
 const App = (state) => {
-    // let { rovers, apod } = state
-    //const rovers = state.get('rovers');
     const apod = state.getIn(['apod','image']);
     
     if (store.get('currentRoverData')) {
@@ -45,8 +48,7 @@ const App = (state) => {
             ${Greeting(store.get('user').get('name'))}          
   
             <section>
-                <h3>Put things on the page!</h3>
-                <p>Here is an example section.</p>
+                <br>
                 <p>
                     One of the most popular websites at NASA is the Astronomy Picture of the Day. In fact, this website is one of
                     the most popular websites across all federal agencies. It has the popular appeal of a Justin Bieber video.
@@ -168,8 +170,7 @@ const recentPhotos = () => {
         
     } else {
         const slicedArray = photoArray.slice (0,4)
-        console.log(slicedArray)
-        return slicedArray.map (pic => {
+        return slicedArray.toJS().map (pic => {
             console.log(pic.img_src)
             return (`
             <div>
@@ -211,10 +212,9 @@ const ImageOfTheDay = (apod) => {
     if ((!apod) || apod.get('date') === today.getDate() ) {
         getImageOfTheDay(store)
     } else {
-        console.log("apod ",apod)
+        console.log('apod ',apod)
         const photodate = new Date(apod.getIn('image','date'))
-        console.log(apod.get('date'))
-        console.log(photodate.getDate(), today.getDate());
+        
         if ((!apod) || apod.get('date') === today.getDate() ) {
             getImageOfTheDay(store)
         }
@@ -225,7 +225,7 @@ const ImageOfTheDay = (apod) => {
             
             }
     
-        else if (apod.getIn(['image', 'media_type']) === "video") {
+        else if (apod.getIn(['image', 'media_type']) === 'video') {
             return (`
                 <p>See today's featured video <a href="${apod.getIn(['image','url'])}" target="_blank">here</a></p>
                 <p>${apod.getIn(['image','title'])}</p>
@@ -233,6 +233,7 @@ const ImageOfTheDay = (apod) => {
             `)
         } else {
             return (`
+                <h2>Here is today's Astronomy Picture of the Day</h2>
                 <img src="${apod.getIn(['image','url'])}" height="350px" width="100%" />
                 <p>${apod.getIn(['image','explanation'])}</p>
             `)
@@ -245,9 +246,7 @@ const ImageOfTheDay = (apod) => {
 
 // Example API call
 const getImageOfTheDay = (state) => {
-    //let { apod } = state
     let apod = state.getIn(['apod','image']);
-    //destructuring, equivalent to let apod = state.apod
 
     fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
