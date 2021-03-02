@@ -2,6 +2,7 @@ let store = Immutable.Map({
     user: Immutable.Map({ name: "Student" }),
     apod: '',
     rovers: Immutable.List(['Curiosity', 'Opportunity', 'Spirit']),
+    currentRover: ''
 })
 
 // add our markup to the page
@@ -54,7 +55,7 @@ const App = (state) => {
                     explanation are returned. These keywords could be used as auto-generated hashtags for twitter or instagram feeds;
                     but generally help with discoverability of relevant imagery.
                 </p>
-                ${ImageOfTheDay(apod)}
+                ${ImageOfTheDay(state.get('apod'))}
             </section>
         </main>
         <footer></footer>
@@ -211,7 +212,8 @@ const ImageOfTheDay = (apod) => {
         getImageOfTheDay(store)
     } else {
         console.log("apod ",apod)
-        const photodate = new Date(apod.get('date'))
+        const photodate = new Date(apod.getIn('image','date'))
+        console.log(apod.get('date'))
         console.log(photodate.getDate(), today.getDate());
         if ((!apod) || apod.get('date') === today.getDate() ) {
             getImageOfTheDay(store)
@@ -246,18 +248,18 @@ const getImageOfTheDay = (state) => {
     //let { apod } = state
     let apod = state.getIn(['apod','image']);
     //destructuring, equivalent to let apod = state.apod
-    console.log(state)
 
     fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
-    
+        
     //return data
 }
 
 //Current Rover API Call
 
 const getCurrentRoverData = (currentRover) => {
+    console.log(currentRover)
     fetch(`http://localhost:3000/manifests/${currentRover}`)
         .then(res => res.json())
         .then(currentRoverData => updateStore(store, { currentRoverData }))
