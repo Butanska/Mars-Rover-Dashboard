@@ -4,18 +4,11 @@ let store = Immutable.Map({
     rovers: Immutable.List(['Curiosity', 'Opportunity', 'Spirit']),
 })
 
-// let store = {
-//     user: { name: "Student" },
-//     apod: '',
-//     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
-// }
-
 // add our markup to the page
 const root = document.getElementById('root')
 
 const updateStore = (store, newState) => {
     store = store.merge(store, newState)
-    //store = Object.assign(store, newState)
     render(root, store)
 }
 
@@ -31,8 +24,6 @@ const App = (state) => {
     //const rovers = state.get('rovers');
     const apod = state.getIn(['apod','image']);
     
-
-    //if (store.currentRoverData) {
     if (store.get('currentRoverData')) {
       return `
         <header></header>
@@ -50,7 +41,6 @@ const App = (state) => {
         <main>
             ${navBar()}
             ${showcase()}
-            <!-- {Greeting(store.user.name)} -->
             ${Greeting(store.get('user').get('name'))}          
   
             <section>
@@ -64,7 +54,6 @@ const App = (state) => {
                     explanation are returned. These keywords could be used as auto-generated hashtags for twitter or instagram feeds;
                     but generally help with discoverability of relevant imagery.
                 </p>
-                <!-- {ImageOfTheDay(apod)} -->
                 ${ImageOfTheDay(apod)}
             </section>
         </main>
@@ -116,7 +105,6 @@ const showcase = () => {
 
 const buildNavMenu = () => {
 
-    //const navArray = store.rovers;
     const navArray = store.get('rovers');
 
     return navArray.map (element => {
@@ -215,44 +203,41 @@ const Greeting = (name) => {
 }
 
 // Example of a pure function that renders infomation requested from the backend
+
 const ImageOfTheDay = (apod) => {
-    // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
-    const photodate = new Date(apod.date)
-    console.log(photodate.getDate(), today.getDate());
-    // console.log(today);
-    // console.log(today.getDate());
-    // console.log(photodate.getDate());
-
-    //console.log(photodate.getDate() === today.getDate());
-
-    //Since we initially don't have data in the apod and it has just an empty string, the following condition will evaluate to True. This will cause the function `getImageOfTheDay` to be called so that we can fetch some data for the apod object from the API:
-    if ((!apod) || apod.date === today.getDate() ) {
-        getImageOfTheDay(store)
-    }
-    //console.log(apod.image.date)
     
-    // check if the photo of the day is actually type video!
- 
-    if (apod === '' || apod.image.media_type === undefined ) {
-
-        return `<p> Welcome to Mars Rover Dashboard </p>`
-        
-        }
-
-    else if (apod.image.media_type === "video") {
-        return (`
-            <p>See today's featured video <a href="${apod.image.url}" target="_blank">here</a></p>
-            <p>${apod.image.title}</p>
-            <p>${apod.image.explanation}</p>
-        `)
+    if ((!apod) || apod.get('date') === today.getDate() ) {
+        getImageOfTheDay(store)
     } else {
-        return (`
-            <img src="${apod.image.url}" height="350px" width="100%" />
-            <p>${apod.image.explanation}</p>
-        `)
+        console.log("apod ",apod)
+        const photodate = new Date(apod.get('date'))
+        console.log(photodate.getDate(), today.getDate());
+        if ((!apod) || apod.get('date') === today.getDate() ) {
+            getImageOfTheDay(store)
+        }
+     
+        if (apod === '' || apod.getIn(['image', 'media_type']) === undefined ) {
+    
+            return `<p> Welcome to Mars Rover Dashboard </p>`
+            
+            }
+    
+        else if (apod.getIn(['image', 'media_type']) === "video") {
+            return (`
+                <p>See today's featured video <a href="${apod.getIn(['image','url'])}" target="_blank">here</a></p>
+                <p>${apod.getIn(['image','title'])}</p>
+                <p>${apod.getIn(['image','explanation'])}</p>
+            `)
+        } else {
+            return (`
+                <img src="${apod.getIn(['image','url'])}" height="350px" width="100%" />
+                <p>${apod.getIn(['image','explanation'])}</p>
+            `)
+        }
     }
 }
+
 
 // ------------------------------------------------------  API CALLS
 
@@ -261,7 +246,7 @@ const getImageOfTheDay = (state) => {
     //let { apod } = state
     let apod = state.getIn(['apod','image']);
     //destructuring, equivalent to let apod = state.apod
-    //console.log(state)
+    console.log(state)
 
     fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
@@ -283,8 +268,6 @@ const getCurrentRoverData = (currentRover) => {
 const onClick = (e) => {
     const selectedRover = e.id;
     updateStore(store, { currentRover: `${selectedRover}` })
-    getCurrentRoverData(store.currentRover)
+    getCurrentRoverData(store.get('currentRover'))
     console.log(store)
 }
-
-
