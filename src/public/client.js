@@ -125,7 +125,7 @@ const buildNavMenu = () => {
     
         return `<div class="rovers" >
         
-        <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this)">${element}</button>
+        <button id="${element}" class="roverButton" type="button" value="${element}" onclick="onClick(this); backToTop();">${element}</button>
         
         </div> `
     
@@ -306,3 +306,8 @@ const onClick = (e) => {
     getCurrentRoverData(store.get('currentRover'))
     console.log(store)
 }
+
+// Scroll to the top of the document
+const backToTop = () => {
+    document.documentElement.scrollTop = 0;
+  }
