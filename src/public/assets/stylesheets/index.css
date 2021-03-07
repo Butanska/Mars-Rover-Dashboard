@@ -1,5 +1,7 @@
 @import "navbar.css";
 @import "showcase.css";
+@import "resets.css";
+@import "page_layout.css";
 
 /* -------------------  MOBILE  --------------------- */
 
@@ -16,7 +18,7 @@ header {
 
 main {
   flex: 1;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 footer {

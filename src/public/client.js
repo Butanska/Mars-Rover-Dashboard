@@ -44,11 +44,19 @@ const App = (state) => {
         <header></header>
         <main>
             ${navBar()}
-            ${showcase()}
-            ${Greeting(store.get('user').get('name'))}          
+            ${showcase()}       
   
-            <section>
+            <div class ="page-layout">
+            ${Greeting(store.get('user').get('name'))}   
                 <br>
+                <p> 
+                   Here you can find information about the NASA Mars Exploration Rovers Curiosity, Opportunity and Spirit. 
+                </p>
+                <p> 
+                   Select the rover you are interested in from the menu above to learn more about its mission and view the most recent photos taken by that rover. 
+                </p>
+                <br>
+                <h2>About NASA's Astronomy Picture of the Day</h2>
                 <p>
                     One of the most popular websites at NASA is the Astronomy Picture of the Day. In fact, this website is one of
                     the most popular websites across all federal agencies. It has the popular appeal of a Justin Bieber video.
@@ -57,8 +65,9 @@ const App = (state) => {
                     explanation are returned. These keywords could be used as auto-generated hashtags for twitter or instagram feeds;
                     but generally help with discoverability of relevant imagery.
                 </p>
+                <br>
                 ${ImageOfTheDay(state.get('apod'))}
-            </section>
+            </div>
         </main>
         <footer></footer>
     `
@@ -76,7 +85,9 @@ const navBar = () => {
           <i class="fas fa-globe-europe"></i> Mars Rover Dashboard <span> Mission insights </span>
         </h1>
         <div class="roversContainer">
+            <div class="rovers">
             <button class="current">APOD</button>
+            </div>
             ${buildNavMenu()}
         </div>
       </div>
@@ -93,10 +104,7 @@ const showcase = () => {
       <div class="container">
         <div class="showcase-container">
           <div class="showcase-content">
-            <div class="category category-mars">Mars</div>
-            <h2>Mars Exploration Rovers</h2>
-            <p>Lorem ipsum ...</p>
-            <a href="blog_post.html" class="btn">Read More</a>
+            <h2>NASA Mars Exploration Rovers</h2>
           </div>
         </div>
       </div>
