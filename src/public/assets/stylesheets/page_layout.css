@@ -4,3 +4,25 @@
   padding: 1rem;
   background-color: #fef0f0;
 }
+
+.page-title h2 {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+
+.roverData {
+  padding: 1rem;
+  background-color: #fef0f0;
+}
+
+.list-title {
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-bottom: .5em;
+}
+
+.description p {
+  padding: 0.2rem;
+}

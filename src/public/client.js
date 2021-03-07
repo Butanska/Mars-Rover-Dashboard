@@ -2,7 +2,10 @@ let store = Immutable.Map({
     user: Immutable.Map({ name: 'Mars Explorer' }),
     apod: '',
     rovers: Immutable.List(['Curiosity', 'Opportunity', 'Spirit']),
-    currentRover: ''
+    currentRover: '',
+    CuriosityURL: 'https://mars.nasa.gov/msl/mission/overview/',
+    OpportunityURL: 'https://mars.nasa.gov/mars-exploration/missions/mars-exploration-rovers/',
+    SpiritURL: 'https://mars.nasa.gov/mars-exploration/missions/mars-exploration-rovers/'
 })
 
 // add our markup to the page
@@ -144,16 +147,39 @@ const renderSelectedRoverData = (rover) => {
     const landingDate = store.getIn(['currentRoverData', 'roverData', 'landing_date'])
     const status = store.getIn(['currentRoverData', 'roverData', 'rover_status'])
     const photoDate = store.getIn(['currentRoverData', 'roverData', 'latest_photo_date'])
+    const roverURL = store.get(`${roverName}URL`)
 
-    return `<div class="roverData" >
-    <h1>${roverName}</h1>
-    <ul>
-        <li>The ${roverName} rover was launched on ${launchDate}.</li>
-        <li>It landed on Mars on ${landingDate}.</li>
-        <li>Its current status is ${status}.</li>
-        <li>The latest photos obtained by ${roverName} were taken on ${photoDate}. You can see them below:</li>
-    </ul>
+    return `<div class="page-layout">
+    <div class="page-title"> <h2>${roverName} Rover Mission Overview</h2> </div>
+    <div class="list-title">Key Facts about NASA's ${roverName} Rover</div>
+    <div class="description"> 
+        <p>
+           <b>Launch:</b>
+           <br>
+           The ${roverName} rover was launched on ${launchDate}.
+        <p>
+        <p>
+           <b>Landing:</b>
+           <br>
+           It landed on Mars on ${landingDate}.
+        </p>
+        <p>
+           <b>Status:</b>
+           <br> 
+           Its current status is ${status}.
+        </p>
+        <p>
+           <b>Latest Photos:</b>
+           <br>
+           The latest photos obtained by ${roverName} were taken on ${photoDate}. 
+           <br>
+           You can see them below:
+        </p>
+    </div>
     ${recentPhotos()}
+    <div>
+    <p>To learn more about the ${roverName} rover mission, visit NASA's dedicated page <a href="${roverURL}" target="_blank">here.</a></p>
+    </div>
     </div> `
     
 }
