@@ -89,7 +89,7 @@ const navBar = () => {
         </h1>
         <div class="roversContainer">
             <div class="rovers">
-            <button class="current">APOD</button>
+            <button class="current" onClick="window.location.reload();">APOD</button>
             </div>
             ${buildNavMenu()}
         </div>
