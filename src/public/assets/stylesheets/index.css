@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 @import "navbar.css";
 @import "showcase.css";
 @import "resets.css";
@@ -10,6 +11,8 @@ body {
   flex-direction: column;
   font-family: Arial;
   min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
 }
 
 header {
@@ -18,7 +21,6 @@ header {
 
 main {
   flex: 1;
-  /* padding: 20px; */
 }
 
 footer {
@@ -27,7 +29,19 @@ footer {
 
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
-  /* use mobile */
+  #main-nav .container {
+    grid-template-columns: 5fr 2fr;
+    text-align: left;
+  }
+
+  #main-nav span {
+    display: inline-block
+  }
+ 
+  #main-nav .container .roversContainer {
+    flex-wrap: nowrap;
+  }
+  
 }
 
 /* -------------------  DESKTOP  -------------------- */

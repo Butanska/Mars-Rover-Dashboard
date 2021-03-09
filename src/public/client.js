@@ -11,11 +11,6 @@ let store = Immutable.Map({
 // add our markup to the page
 const root = document.getElementById('root')
 
-// const updateStore = (store, newState) => {
-//     store = store.merge(store, newState)
-//     render(root, store)
-// }
-
 const updateStore = (state, newState) => {
     store = state.merge(newState)
     render(root, store)
@@ -136,12 +131,6 @@ const buildNavMenu = () => {
 //Render data about selected rover
 
 const renderSelectedRoverData = (rover) => {
-    // const roverName = store.currentRover
-    // const launchDate = store.currentRoverData.roverData.launch_date
-    // const landingDate = store.currentRoverData.roverData.landing_date
-    // const status = store.currentRoverData.roverData.rover_status
-    // const photoDate = store.currentRoverData.roverData.latest_photo_date
-
     const roverName = store.get('currentRover')
     const launchDate = store.getIn(['currentRoverData', 'roverData', 'launch_date'])
     const landingDate = store.getIn(['currentRoverData', 'roverData', 'landing_date'])
@@ -187,8 +176,6 @@ const renderSelectedRoverData = (rover) => {
 // Most recently available photos
 
 const recentPhotos = () => {
-    // const photoArray = store.currentRoverData.roverData.recent_photos.photos
-
     const photoArray = store.getIn(['currentRoverData', 'roverData', 'recent_photos', 'photos'])
 
     if (photoArray.length < 4) {
@@ -261,9 +248,9 @@ const ImageOfTheDay = (apod) => {
     
         else if (apod.getIn(['image', 'media_type']) === 'video') {
             return (`
-                <p>See today's featured video <a href="${apod.getIn(['image','url'])}" target="_blank">here</a></p>
-                <p>${apod.getIn(['image','title'])}</p>
-                <p>${apod.getIn(['image','explanation'])}</p>
+                <div class="video-title"><h2>APOD: ${apod.getIn(['image','title'])}</h2></div>
+                <div class="video-link"> <p>See today's featured video <a href="${apod.getIn(['image','url'])}" target="_blank">here</a>.</p></div>
+                <div class="video-explanation"><p>${apod.getIn(['image','explanation'])}</p></div>
             `)
         } else {
             return (`
@@ -285,8 +272,6 @@ const getImageOfTheDay = (state) => {
     fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
-        
-    //return data
 }
 
 //Current Rover API Call
